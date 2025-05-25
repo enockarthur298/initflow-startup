@@ -1,0 +1,51 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build files
+dist
+dist-ssr
+build
+functions/build/
+_worker.bundle
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.dev.vars
+*.vars
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local development
+.wrangler
+.cache
+.history
+
+# Misc
+*.local
+site
+.qodo
+
