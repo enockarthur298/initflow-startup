@@ -1,12 +1,7 @@
 name = "initflow"
-type = "pages"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-03-28"
-pages_build_output_dir = "./build/client"
 
 [build]
   command = "pnpm run build"
   publish = "./build/client"
-
-[site]
-  bucket = "./build/client"

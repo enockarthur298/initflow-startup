@@ -11,7 +11,7 @@
     "email": "your.email@example.com"
   },
   "scripts": {
-    "deploy": "pnpm run build && pnpm dlx wrangler pages deploy --project-name=initflow ./build/client",
+    "deploy": "pnpm run build && pnpm dlx wrangler@latest pages deploy --project-name=initflow ./build/client",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 remix vite:build",
     "dev": "node pre-start.cjs  && remix vite:dev",
     "test": "vitest --run",
