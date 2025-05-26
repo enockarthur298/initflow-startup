@@ -11,9 +11,11 @@
     "email": "your.email@example.com"
   },
   "scripts": {
+    "vercel-build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 remix vite:build",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 remix vite:build",
     "dev": "remix vite:dev",
     "start": "remix-serve build",
+    "vercel-dev": "remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint app",
