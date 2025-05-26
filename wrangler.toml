@@ -2,13 +2,5 @@
 name = "initflow"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-03-28"
-
-[build]
-  command = "npm run build"
-  publish = "./build/client"
-
-[build.environment]
-  NODE_VERSION = "18.18.0"
-
-[send_metrics]
-  enabled = false
+pages_build_output_dir = "./build/client"
+send_metrics = false
