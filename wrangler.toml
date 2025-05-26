@@ -1,8 +1,6 @@
+#:schema node_modules/wrangler/config-schema.json
 name = "initflow"
-compatibility_date = "2025-03-28"
 compatibility_flags = ["nodejs_compat"]
-send_metrics = false
-
-# ✅ These ONLY work in Wrangler v4
+compatibility_date = "2025-03-28"
 pages_build_output_dir = "./build/client"
-pages_functions_dir = "./build/server"
+send_metrics = false

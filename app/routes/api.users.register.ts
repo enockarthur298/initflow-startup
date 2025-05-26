@@ -41,8 +41,15 @@ export const action = async ({ request, params, context }: ActionFunctionArgs) =
         }, { status: 200 }); // Return 200 to prevent frontend errors
       }
       
-      const data = await response.json();
-      return json(data);
+      const responseData = await response.json().catch(() => ({}));
+      return json(responseData, {
+        status: response.status,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
     } catch (fetchError) {
       console.error('Network error registering user:', fetchError);
       return json({ 

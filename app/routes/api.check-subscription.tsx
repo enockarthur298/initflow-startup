@@ -1,4 +1,5 @@
 import { json, type LoaderFunction } from '@remix-run/cloudflare';
+import { BACKEND_URL } from '~/utils/apiConfig';
 
 // This is a Remix route that handles GET requests to /api/check-subscription
 // It checks if a user has an active subscription by forwarding the request to the Python backend
@@ -19,45 +20,54 @@ export const loader: LoaderFunction = async ({ request }) => {
   const userId = url.searchParams.get('user_id');
   
   if (!userId) {
-    return json({ error: "User ID is required", has_active_subscription: false }, { status: 400 });
+    return json(
+      { error: "User ID is required", has_active_subscription: false }, 
+      { 
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      }
+    );
   }
   
   try {
-    // Forward the request to your Python backend
-    // In a production environment, you might want to use environment variables
-    // For development, default to localhost:5000 if the env var is not set
-    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://localhost:5000';
-    
     console.log(`Checking subscription for user: ${userId}`);
-    console.log(`Forwarding to: ${pythonBackendUrl}/api/check-subscription`);
     
-    try {
-      const response = await fetch(`${pythonBackendUrl}/api/check-subscription?user_id=${userId}`, {
-        // Add timeout to prevent hanging requests
-        signal: AbortSignal.timeout(5000) // 5 second timeout
-      });
-      
-      if (!response.ok) {
-        console.error(`Subscription check failed: ${response.statusText}`);
-        // Return a successful response with has_active_subscription: false
-        return json({ 
-          error: `Subscription check failed: ${response.statusText}`,
-          has_active_subscription: false,
-          subscriptions: []
-        }, { status: 200 });
-      }
-      
-      const data = await response.json();
-      return json(data);
-    } catch (fetchError) {
-      console.error('Network error checking subscription:', fetchError);
+    const response = await fetch(`${BACKEND_URL}/api/check-subscription?user_id=${userId}`, {
+      // Add timeout to prevent hanging requests
+      signal: AbortSignal.timeout(5000) // 5 second timeout
+    });
+    
+    if (!response.ok) {
+      console.error(`Subscription check failed: ${response.statusText}`);
       // Return a successful response with has_active_subscription: false
-      return json({
-        error: "Network error checking subscription",
+      return json({ 
+        error: `Subscription check failed: ${response.statusText}`,
         has_active_subscription: false,
         subscriptions: []
-      }, { status: 200 });
+      }, { 
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
     }
+    
+    // If we get here, the response is ok
+    const responseData = await response.json();
+    return json(responseData, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
+    
   } catch (error) {
     console.error('Error checking subscription:', error);
     
@@ -66,6 +76,13 @@ export const loader: LoaderFunction = async ({ request }) => {
       error: "Error checking subscription status",
       has_active_subscription: false,
       subscriptions: []
-    }, { status: 200 });
+    }, { 
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
   }
 };

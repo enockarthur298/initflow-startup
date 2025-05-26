@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@vercel/remix" },
+    { "src": "api/vercel-serverless/.*", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/vercel-serverless/index.py" },
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/" }
+  ],
+  "env": {
+    "PYTHON_VERSION": "3.9"
+  }
+}
