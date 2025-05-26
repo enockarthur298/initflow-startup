@@ -96,14 +96,38 @@ export default defineConfig((config) => {
     },
     plugins: [
       nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream', 'crypto'],  // Added 'crypto'
+        // Enable all polyfills needed for the app
+        include: [
+          'buffer',
+          'process',
+          'util',
+          'stream',
+          'crypto',
+          'os',
+          'url',
+          'events',
+          'string_decoder',
+          'querystring',
+          'timers'
+        ],
         globals: {
           Buffer: true,
           process: true,
           global: true,
         },
+        // Exclude heavy modules that aren't needed in browser
+        exclude: [
+          'fs',
+          'path',
+          'child_process',
+          'tls',
+          'net',
+          'dns',
+          'http2',
+          'module'
+        ],
+        // Enable protocol imports
         protocolImports: true,
-        exclude: ['child_process', 'fs', 'path'],
       }),
       {
         name: 'buffer-polyfill',
