@@ -1,12 +1,8 @@
-#:schema node_modules/wrangler/config-schema.json
 name = "initflow"
-project_name = "initflow"  # Add this if your Cloudflare Pages project is also called "initflow"
-compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-03-28"
+compatibility_flags = ["nodejs_compat"]
 send_metrics = false
 
-# 👇 Path to your static frontend output (like index.html, JS/CSS, etc.)
+# ✅ These ONLY work in Wrangler v4
 pages_build_output_dir = "./build/client"
-
-# 👇 Path to your SSR function (where build/server/index.js lives)
 pages_functions_dir = "./build/server"
