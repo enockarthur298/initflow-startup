@@ -5,13 +5,3 @@ compatibility_date = "2025-03-28"
 [build]
   command = "pnpm run build"
   publish = "./build/client"
-
-[site]
-  bucket = "./build/client"
-  include = ["**/*"]
-  exclude = [
-    "_worker.js",
-    "_redirects",
-    "_headers",
-    "_routes.json"
-  ]
