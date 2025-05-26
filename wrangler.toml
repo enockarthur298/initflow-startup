@@ -1,16 +1,14 @@
 # wrangler.toml
-name             = "initflow"            # your site’s name
-project_name     = "initflow"            # must match your Pages project
-compatibility_date  = "2025-05-26"       # today’s date
+name                 = "initflow"               # your Cloudflare Pages site name
+project_name         = "initflow"               # same as above
+compatibility_date   = "2025-05-26"             # today’s date
+compatibility_flags  = ["nodejs_compat"]        # shim crypto, stream, etc.
 
-# polyfill Node built-ins for your Functions
-compatibility_flags = ["nodejs_compat"]
+# Where Cloudflare should pick up your front-end build
+pages_build_output_dir = "build/client"
+
+# Where Cloudflare should pick up your SSR Functions bundle
+pages_functions_dir    = "build/server"
 
 [build]
-# your build script
-command   = "pnpm run build"
-# where your client bundle lives
-directory = "build/client"
-
-# point Pages at your Functions (SSR handlers)
-functions = "build/server"
+command = "pnpm run build"                     # what you run to generate both client & server outputs
