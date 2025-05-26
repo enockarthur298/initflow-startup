@@ -1,23 +1,16 @@
-name = "initflow"
-compatibility_date = "2025-05-26"
-compatibility_flags = ["nodejs_compat"]
-node_compat = true
+# wrangler.toml
+name             = "initflow"            # your site’s name
+project_name     = "initflow"            # must match your Pages project
+compatibility_date  = "2025-05-26"       # today’s date
 
-[site]
-bucket = "./build/client"
+# polyfill Node built-ins for your Functions
+compatibility_flags = ["nodejs_compat"]
 
 [build]
-command = "pnpm run build"
+# your build script
+command   = "pnpm run build"
+# where your client bundle lives
+directory = "build/client"
 
-[build.upload]
-format = "modules"
-main = "build/server/index.js"
-
-# Enable node.js compatibility
-[build.environment]
-NODE_VERSION = "18"
-
-# Polyfill node built-ins
-[[unsafe.bindings]]
-name = "nodejs_compat"
-type = "nodejs_compat"
+# point Pages at your Functions (SSR handlers)
+functions = "build/server"
