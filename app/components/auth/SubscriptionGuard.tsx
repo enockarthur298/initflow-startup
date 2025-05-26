@@ -26,13 +26,30 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
 
   // Check subscription status when user signs in
   useEffect(() => {
-    if (isAuthLoaded && isSignedIn && userId) {
-      checkSubscriptionStatus();
+    let mounted = true;
+    
+    const checkAndHandleSubscription = async () => {
+      if (isAuthLoaded && isSignedIn && userId) {
+        try {
+          await checkSubscriptionStatus();
+        } catch (error) {
+          console.error('Error in subscription check:', error);
+          setShowSubscriptionDialog(false);
+        }
+      }
+    };
+    
+    if (mounted) {
+      checkAndHandleSubscription();
     }
+    
+    return () => {
+      mounted = false;
+    };
   }, [isAuthLoaded, isSignedIn, userId]);
 
   const checkSubscriptionStatus = async () => {
-    if (!userId) return;
+    if (!userId) return false;
     
     setIsCheckingSubscription(true);
     try {
@@ -45,12 +62,16 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
       
       const data = await response.json() as SubscriptionResponse;
       
-      if (!data.has_active_subscription) {
+      if (data.has_active_subscription === false) {
         setShowSubscriptionDialog(true);
+        return false;
       }
+      
+      return true;
     } catch (error) {
       console.error('Error checking subscription:', error);
       // If there's an error, we'll still let them use the app
+      return true;
     } finally {
       setIsCheckingSubscription(false);
     }
@@ -64,9 +85,10 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
     setShowSubscriptionDialog(false);
   };
 
-  if (!isAuthLoaded || isCheckingSubscription) {
+  // Only show loading state if we're still checking auth or subscription
+  if (!isAuthLoaded || (isCheckingSubscription && isSignedIn)) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-[1000]">
+      <div className="fixed inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-[1000] pointer-events-none">
         <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
       </div>
     );

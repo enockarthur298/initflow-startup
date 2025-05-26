@@ -71,12 +71,11 @@ const TAB_DESCRIPTIONS: Record<TabType, string> = {
   'event-logs': 'View system events and logs',
   update: 'Check for updates and release notes',
   'task-manager': 'Monitor system resources and processes',
-  'tab-management': 'Configure visible tabs and their order',
-  billing: 'Manage your subscription and billing details',
+  'tab-management': 'Configure visible tabs and their order'
 };
 
 // Beta status for experimental features
-const BETA_TABS = new Set<TabType>(['task-manager', 'service-status', 'update', 'local-providers', 'billing']);
+const BETA_TABS = new Set<TabType>(['task-manager', 'service-status', 'update', 'local-providers']);
 
 const BetaLabel = () => (
   <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full bg-[#3366FF]/10 dark:bg-[#3366FF]/20">
@@ -252,8 +251,6 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
         return <TaskManagerTab />;
       case 'service-status':
         return <ServiceStatusTab />;
-      case 'billing':
-        return <BillingTab />;
       default:
         return null;
     }

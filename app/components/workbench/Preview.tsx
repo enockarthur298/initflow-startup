@@ -623,17 +623,19 @@ export const Preview = memo(() => {
       {isPortDropdownOpen && (
         <div className="z-iframe-overlay w-full h-full absolute" onClick={() => setIsPortDropdownOpen(false)} />
       )}
-      <div className="bg-bolt-elements-background-depth-2 p-2 flex items-center gap-2">
+      <div className="bg-bolt-elements-background-depth-2 p-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <IconButton icon="i-ph:arrow-clockwise" onClick={reloadPreview} />
+          <IconButton 
+            icon="i-ph:arrow-clockwise" 
+            onClick={reloadPreview} 
+            title="Reload preview"
+          />
           <IconButton
             icon="i-ph:selection"
             onClick={() => setIsSelectionMode(!isSelectionMode)}
             className={isSelectionMode ? 'bg-bolt-elements-background-depth-3' : ''}
+            title={isSelectionMode ? 'Exit selection mode' : 'Enter selection mode'}
           />
-        </div>
-
-        <div className="flex-grow flex items-center gap-1 bg-bolt-elements-preview-addressBar-background border border-bolt-elements-borderColor text-bolt-elements-preview-addressBar-text rounded-full px-1 py-1 text-sm hover:bg-bolt-elements-preview-addressBar-backgroundHover hover:focus-within:bg-bolt-elements-preview-addressBar-backgroundActive focus-within:bg-bolt-elements-preview-addressBar-backgroundActive focus-within-border-bolt-elements-borderColorActive focus-within:text-bolt-elements-preview-addressBar-textActive">
           <PortDropdown
             activePreviewIndex={activePreviewIndex}
             setActivePreviewIndex={setActivePreviewIndex}
@@ -641,34 +643,6 @@ export const Preview = memo(() => {
             setHasSelectedPreview={(value) => (hasSelectedPreview.current = value)}
             setIsDropdownOpen={setIsPortDropdownOpen}
             previews={previews}
-          />
-          <input
-            title="URL Path"
-            ref={inputRef}
-            className="w-full bg-transparent outline-none"
-            type="text"
-            value={displayPath}
-            onChange={(event) => {
-              setDisplayPath(event.target.value);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' && activePreview) {
-                let targetPath = displayPath.trim();
-
-                if (!targetPath.startsWith('/')) {
-                  targetPath = '/' + targetPath;
-                }
-
-                const fullUrl = activePreview.baseUrl + targetPath;
-                setIframeUrl(fullUrl);
-                setDisplayPath(targetPath);
-
-                if (inputRef.current) {
-                  inputRef.current.blur();
-                }
-              }
-            }}
-            disabled={!activePreview}
           />
         </div>
 

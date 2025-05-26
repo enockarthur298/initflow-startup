@@ -62,29 +62,14 @@ export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
               return (
                 <div
                   key={index}
-                  className={classNames('flex gap-4 p-6 py-5 w-full rounded-[calc(0.75rem-1px)]', {
+                  className={classNames('flex p-6 py-5 w-full rounded-[calc(0.75rem-1px)]', {
                     'bg-bolt-elements-messages-background': isUserMessage || !isStreaming || (isStreaming && !isLast),
                     'bg-gradient-to-b from-bolt-elements-messages-background from-30% to-transparent':
                       isStreaming && isLast,
                     'mt-4': !isFirst,
                   })}
                 >
-                  {isUserMessage && (
-                    <div className="flex items-center justify-center w-[40px] h-[40px] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0 self-start">
-                      {profile?.avatar ? (
-                        <img
-                          src={profile.avatar}
-                          alt={profile?.username || 'User'}
-                          className="w-full h-full object-cover"
-                          loading="eager"
-                          decoding="sync"
-                        />
-                      ) : (
-                        <div className="i-ph:user-fill text-2xl" />
-                      )}
-                    </div>
-                  )}
-                  <div className="grid grid-col-1 w-full">
+                  <div className="w-full">
                     {isUserMessage ? (
                       <UserMessage content={content} />
                     ) : (

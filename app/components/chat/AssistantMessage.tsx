@@ -64,13 +64,8 @@ export const AssistantMessage = memo(({ content, annotations, messageId, onRewin
   return (
     <div className="overflow-hidden w-full">
       <>
-        <div className="flex items-center justify-between text-sm text-bolt-elements-textSecondary mb-2">
-          {usage && (
-            <div className="text-xs opacity-70">
-              Tokens: {usage.totalTokens}
-            </div>
-          )}
-          {onRewind && messageId && (
+        {onRewind && messageId && (
+          <div className="flex items-center justify-end text-sm text-bolt-elements-textSecondary mb-2">
             <WithTooltip tooltip="Revert to this message">
               <button
                 onClick={() => onRewind(messageId)}
@@ -78,8 +73,8 @@ export const AssistantMessage = memo(({ content, annotations, messageId, onRewin
                 className="i-ph:arrow-u-up-left text-xl text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary transition-colors"
               />
             </WithTooltip>
-          )}
-        </div>
+          </div>
+        )}
       </>
       <Markdown html>{content}</Markdown>
     </div>

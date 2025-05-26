@@ -133,13 +133,11 @@ export const ChatImpl = memo(
     const supabaseAlert = useStore(workbenchStore.supabaseAlert);
     const { activeProviders, promptId, autoSelectTemplate, contextOptimizationEnabled } = useSettings();
 
-    const [model, setModel] = useState(() => {
-      const savedModel = Cookies.get('selectedModel');
-      return savedModel || DEFAULT_MODEL;
-    });
-    const [provider, setProvider] = useState(() => {
-      const savedProvider = Cookies.get('selectedProvider');
-      return (PROVIDER_LIST.find((p) => p.name === savedProvider) || DEFAULT_PROVIDER) as ProviderInfo;
+    // Always use Gemini 2.0 Flash as the default model
+    const [model] = useState(DEFAULT_MODEL);
+    // Always use Google as the provider for Gemini
+    const [provider] = useState(() => {
+      return PROVIDER_LIST.find((p) => p.name === 'Google') as ProviderInfo;
     });
 
     const { showChat } = useStore(chatStore);
@@ -494,15 +492,7 @@ export const ChatImpl = memo(
       }
     }, []);
 
-    const handleModelChange = (newModel: string) => {
-      setModel(newModel);
-      Cookies.set('selectedModel', newModel, { expires: 30 });
-    };
-
-    const handleProviderChange = (newProvider: ProviderInfo) => {
-      setProvider(newProvider);
-      Cookies.set('selectedProvider', newProvider.name, { expires: 30 });
-    };
+    // Model and provider are now fixed to Gemini 2.0 Flash and Google respectively
 
     return (
       <BaseChat
@@ -518,11 +508,7 @@ export const ChatImpl = memo(
         enhancingPrompt={enhancingPrompt}
         promptEnhanced={promptEnhanced}
         sendMessage={sendMessage}
-        model={model}
-        setModel={handleModelChange}
-        provider={provider}
-        setProvider={handleProviderChange}
-        providerList={activeProviders}
+        // Model and provider are now fixed to Gemini 2.0 Flash and Google respectively
         handleInputChange={(e) => {
           onTextareaChange(e);
           debouncedCachePrompt(e);
