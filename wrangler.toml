@@ -1,14 +1,6 @@
-# wrangler.toml
-name                 = "initflow"               # your Cloudflare Pages site name
-project_name         = "initflow"               # same as above
-compatibility_date   = "2025-05-26"             # today’s date
-compatibility_flags  = ["nodejs_compat"]        # shim crypto, stream, etc.
-
-# Where Cloudflare should pick up your front-end build
-pages_build_output_dir = "build/client"
-
-# Where Cloudflare should pick up your SSR Functions bundle
-pages_functions_dir    = "build/server"
-
-[build]
-command = "pnpm run build"                     # what you run to generate both client & server outputs
+#:schema node_modules/wrangler/config-schema.json
+name = "initflow"
+compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2025-05-26"
+pages_build_output_dir = "./build/client"
+send_metrics = false
