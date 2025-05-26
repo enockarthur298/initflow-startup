@@ -1,35 +1,7 @@
 import type { AppLoadContext } from '@remix-run/cloudflare';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
-
-interface ReactDOMServer {
-  renderToReadableStream: (
-    element: React.ReactElement,
-    options?: {
-      signal?: AbortSignal;
-      onError?: (error: unknown) => void;
-    }
-  ) => Promise<ReadableStream<Uint8Array> & { allReady: Promise<void> }>;
-}
-
-// Dynamic import to handle both ESM and CJS
-let renderToReadableStream: ReactDOMServer['renderToReadableStream'];
-
-// Try ESM import first, fallback to CJS
-try {
-  const reactDomServer = await import('react-dom/server');
-  renderToReadableStream = reactDomServer.renderToReadableStream || 
-    (reactDomServer.default && reactDomServer.default.renderToReadableStream);
-} catch (e) {
-  // Fallback to CJS require if ESM import fails
-  const reactDomServer = require('react-dom/server');
-  renderToReadableStream = reactDomServer.renderToReadableStream || 
-    (reactDomServer.default && reactDomServer.default.renderToReadableStream);
-}
-
-if (!renderToReadableStream) {
-  throw new Error('Failed to import renderToReadableStream from react-dom/server');
-}
+import { renderToReadableStream } from 'react-dom/server';
 import { renderHeadToString } from 'remix-island';
 import { Head } from './root';
 import { themeStore } from '~/lib/stores/theme';
@@ -43,80 +15,52 @@ export default async function handleRequest(
 ) {
   // await initializeModelList({});
 
-  // Create a new AbortController for the render
-  const controller = new AbortController();
-  const signal = controller.signal;
-
-  // Set a timeout for the render
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-  let readable: Awaited<ReturnType<typeof renderToReadableStream>> | null = null;
-  try {
-    readable = await renderToReadableStream(
-      <RemixServer context={remixContext} url={request.url} />,
-      {
-        signal,
-        onError(error: unknown) {
-          console.error('Stream error:', error);
-          responseStatusCode = 500;
-          controller.abort();
-        },
-      }
-    );
-  } catch (error) {
-    console.error('Render error:', error);
-    responseStatusCode = 500;
-    throw error;
-  } finally {
-    clearTimeout(timeoutId);
-  }
+  const readable = await renderToReadableStream(<RemixServer context={remixContext} url={request.url} />, {
+    signal: request.signal,
+    onError(error: unknown) {
+      console.error(error);
+      responseStatusCode = 500;
+    },
+  });
 
   const body = new ReadableStream({
     start(controller) {
-      try {
-        const head = renderHeadToString({ request, remixContext, Head });
+      const head = renderHeadToString({ request, remixContext, Head });
 
-        controller.enqueue(
-          new Uint8Array(
-            new TextEncoder().encode(
-              `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${head}</head><body><div id="root" class="w-full h-full">`,
-            ),
+      controller.enqueue(
+        new Uint8Array(
+          new TextEncoder().encode(
+            `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${head}</head><body><div id="root" class="w-full h-full">`,
           ),
-        );
+        ),
+      );
 
-        const reader = readable.getReader();
+      const reader = readable.getReader();
 
-        function read() {
-          reader.read()
-            .then(({ done, value }: { done: boolean; value?: Uint8Array }) => {
-              if (done) {
-                controller.enqueue(new Uint8Array(new TextEncoder().encode('</div></body></html>')));
-                controller.close();
-                return;
-              }
-              if (value) {
-                controller.enqueue(value);
-              }
-              read();
-            })
-            .catch((error: unknown) => {
-              console.error('Stream read error:', error);
-              controller.error(error);
-            });
-        }
-        
-        read();
-      } catch (error) {
-        console.error('Error in ReadableStream start:', error);
-        controller.error(error);
+      function read() {
+        reader
+          .read()
+          .then(({ done, value }) => {
+            if (done) {
+              controller.enqueue(new Uint8Array(new TextEncoder().encode('</div></body></html>')));
+              controller.close();
+
+              return;
+            }
+
+            controller.enqueue(value);
+            read();
+          })
+          .catch((error) => {
+            controller.error(error);
+            readable.cancel();
+          });
       }
+      read();
     },
+
     cancel() {
-      // Cleanup if the stream is cancelled
-      if (readable) {
-        const reader = readable.getReader();
-        reader.cancel().catch(console.error);
-      }
+      readable.cancel();
     },
   });
 
