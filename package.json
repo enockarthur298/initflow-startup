@@ -13,8 +13,6 @@
   "scripts": {
     "deploy": "pnpm run build && wrangler deploy",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 remix vite:build",
-    "vercel-build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production remix vite:build && pnpm run build:vercel-fix",
-    "build:vercel-fix": "node scripts/vercel-fix.js",
     "dev": "node pre-start.cjs && remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",
