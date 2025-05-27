@@ -1,8 +1,35 @@
 import type { AppLoadContext } from '@remix-run/cloudflare';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
-import ReactDOMServer from 'react-dom/server';
-const { renderToReadableStream } = ReactDOMServer;
+
+interface ReactDOMServer {
+  renderToReadableStream: (
+    element: React.ReactElement,
+    options?: {
+      signal?: AbortSignal;
+      onError?: (error: unknown) => void;
+    }
+  ) => Promise<ReadableStream<Uint8Array> & { allReady: Promise<void> }>;
+}
+
+// Dynamic import to handle both ESM and CJS
+let renderToReadableStream: ReactDOMServer['renderToReadableStream'];
+
+// Try ESM import first, fallback to CJS
+try {
+  const reactDomServer = await import('react-dom/server');
+  renderToReadableStream = reactDomServer.renderToReadableStream || 
+    (reactDomServer.default && reactDomServer.default.renderToReadableStream);
+} catch (e) {
+  // Fallback to CJS require if ESM import fails
+  const reactDomServer = require('react-dom/server');
+  renderToReadableStream = reactDomServer.renderToReadableStream || 
+    (reactDomServer.default && reactDomServer.default.renderToReadableStream);
+}
+
+if (!renderToReadableStream) {
+  throw new Error('Failed to import renderToReadableStream from react-dom/server');
+}
 import { renderHeadToString } from 'remix-island';
 import { Head } from './root';
 import { themeStore } from '~/lib/stores/theme';

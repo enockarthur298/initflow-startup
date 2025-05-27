@@ -101,13 +101,13 @@ export default defineConfig((config) => {
     },
     plugins: [
       nodePolyfills({
-        protocolImports: true,
+        include: ['buffer', 'process', 'util', 'stream', 'crypto'],  // Added 'crypto'
         globals: {
           Buffer: true,
-          global: true,
           process: true,
+          global: true,
         },
-        include: ['stream', 'events', 'crypto', 'buffer', 'util', 'process'],
+        protocolImports: true,
         exclude: ['child_process', 'fs', 'path'],
       }),
       {
