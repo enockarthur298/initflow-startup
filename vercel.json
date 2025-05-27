@@ -1,23 +1,12 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/remix"
-    }
-  ],
+  "version": 3,
+  "framework": "remix",
+  "buildCommand": "remix vite:build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "build/client",
   "routes": [
-    {
-      "src": "/build/(.*)",
-      "dest": "/build/$1"
-    },
-    {
-      "src": "/public/(.*)",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api"
-    }
+    { "handle": "filesystem" },
+    { "src": "/build/(.*)", "dest": "/build/$1" },
+    { "src": "/(.*)", "dest": "/" }
   ]
 }
