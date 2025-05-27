@@ -351,6 +351,12 @@ importers:
       '@electron/notarize':
         specifier: ^2.5.0
         version: 2.5.0
+      '@esbuild-plugins/node-globals-polyfill':
+        specifier: ^0.2.3
+        version: 0.2.3(esbuild@0.17.19)
+      '@esbuild-plugins/node-modules-polyfill':
+        specifier: ^0.2.2
+        version: 0.2.2(esbuild@0.17.19)
       '@iconify-json/ph':
         specifier: ^1.2.1
         version: 1.2.2

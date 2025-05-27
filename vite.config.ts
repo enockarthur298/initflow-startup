@@ -91,17 +91,23 @@ export default defineConfig((config) => {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     },
     build: {
-      target: 'esnext',
+      target: 'es2022',
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+      rollupOptions: {
+        external: ['events', 'crypto', 'stream'],
+      },
     },
     plugins: [
       nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream', 'crypto'],  // Added 'crypto'
+        protocolImports: true,
         globals: {
           Buffer: true,
-          process: true,
           global: true,
+          process: true,
         },
-        protocolImports: true,
+        include: ['stream', 'events', 'crypto', 'buffer', 'util', 'process'],
         exclude: ['child_process', 'fs', 'path'],
       }),
       {
