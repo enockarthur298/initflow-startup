@@ -8,7 +8,6 @@ import * as dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-
 dotenv.config();
 
 // Get detailed git info with fallbacks
@@ -96,7 +95,7 @@ export default defineConfig((config) => {
     },
     plugins: [
       nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream'],
+        include: ['buffer', 'process', 'util', 'stream', 'crypto'],  // Added 'crypto'
         globals: {
           Buffer: true,
           process: true,

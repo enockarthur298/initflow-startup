@@ -41,9 +41,8 @@
     "electron:build:dist": "rm -rf dist && pnpm electron:build:renderer && pnpm electron:build:deps && electron-builder --mwl"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.18.0"
   },
-  "packageManager": "pnpm@8.15.9",
   "dependencies": {
     "@ai-sdk/amazon-bedrock": "1.0.6",
     "@ai-sdk/anthropic": "0.0.39",
