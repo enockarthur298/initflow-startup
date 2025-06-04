@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     // Forward the request to your Python backend
     // In a production environment, you might want to use environment variables
     // For development, default to localhost:5000 if the env var is not set
-    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'http://localhost:5000';
+    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || 'https://backend.initflow.online';
     
     console.log(`Checking subscription for user: ${userId}`);
     console.log(`Forwarding to: ${pythonBackendUrl}/api/check-subscription`);

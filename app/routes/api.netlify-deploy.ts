@@ -1,5 +1,5 @@
 import { type ActionFunctionArgs, json } from '@remix-run/cloudflare';
-import { SHA1 } from 'crypto-js';
+import crypto from 'crypto';
 import type { NetlifySiteInfo } from '~/types/netlify';
 
 interface DeployRequestBody {
@@ -104,7 +104,7 @@ export async function action({ request }: ActionFunctionArgs) {
     for (const [filePath, content] of Object.entries(files)) {
       // Ensure file path starts with a forward slash
       const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
-      const hash = SHA1(content).toString();
+      const hash = crypto.createHash('sha1').update(content).digest('hex');
       fileDigests[normalizedPath] = hash;
     }
 

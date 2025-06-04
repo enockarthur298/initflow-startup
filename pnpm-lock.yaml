@@ -200,6 +200,9 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.1
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -316,7 +319,7 @@ importers:
         version: 0.2.0(@remix-run/react@2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@remix-run/server-runtime@2.16.3(typescript@5.8.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       remix-utils:
         specifier: ^7.7.0
-        version: 7.7.0(@remix-run/cloudflare@2.16.3(@cloudflare/workers-types@4.20250525.0)(typescript@5.8.2))(@remix-run/node@2.16.3(typescript@5.8.2))(@remix-run/react@2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@remix-run/router@1.23.0)(react@18.3.1)(zod@3.24.2)
+        version: 7.7.0(@remix-run/cloudflare@2.16.3(@cloudflare/workers-types@4.20250525.0)(typescript@5.8.2))(@remix-run/node@2.16.3(typescript@5.8.2))(@remix-run/react@2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@remix-run/router@1.23.0)(crypto-js@4.2.0)(react@18.3.1)(zod@3.24.2)
       rollup-plugin-node-polyfills:
         specifier: ^0.2.1
         version: 0.2.1
@@ -4144,6 +4147,9 @@ packages:
   crypto-browserify@3.12.1:
     resolution: {integrity: sha512-r4ESw/IlusD17lgQi1O20Fa3qNnsckR126TdUuBgAu7GBYSIPvdNyONd3Zrxh0xCwA4+6w/TDArBPsMvhur+KQ==}
     engines: {node: '>= 0.10'}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-box-model@1.2.1:
     resolution: {integrity: sha512-a7Vr4Q/kd/aw96bnJG332W9V9LkJO69JRcaCYDUqjp6/z0w6VcZjgAcTbgFxEPfBgdnAwlh3iwu+hLopa+flJw==}
@@ -12442,6 +12448,8 @@ snapshots:
       randombytes: 2.1.0
       randomfill: 1.0.4
 
+  crypto-js@4.2.0: {}
+
   css-box-model@1.2.1:
     dependencies:
       tiny-invariant: 1.3.3
@@ -15897,7 +15905,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  remix-utils@7.7.0(@remix-run/cloudflare@2.16.3(@cloudflare/workers-types@4.20250525.0)(typescript@5.8.2))(@remix-run/node@2.16.3(typescript@5.8.2))(@remix-run/react@2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@remix-run/router@1.23.0)(react@18.3.1)(zod@3.24.2):
+  remix-utils@7.7.0(@remix-run/cloudflare@2.16.3(@cloudflare/workers-types@4.20250525.0)(typescript@5.8.2))(@remix-run/node@2.16.3(typescript@5.8.2))(@remix-run/react@2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@remix-run/router@1.23.0)(crypto-js@4.2.0)(react@18.3.1)(zod@3.24.2):
     dependencies:
       type-fest: 4.38.0
     optionalDependencies:
@@ -15905,6 +15913,7 @@ snapshots:
       '@remix-run/node': 2.16.3(typescript@5.8.2)
       '@remix-run/react': 2.16.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@remix-run/router': 1.23.0
+      crypto-js: 4.2.0
       react: 18.3.1
       zod: 3.24.2
 
