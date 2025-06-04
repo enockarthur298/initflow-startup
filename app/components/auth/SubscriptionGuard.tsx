@@ -163,17 +163,20 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
                 
                 <div className="mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                   <div className="flex justify-center items-baseline mb-6">
-                    <span className="text-4xl font-bold text-gray-900 dark:text-white">$9</span>
+                    <span className="text-4xl font-bold text-gray-900 dark:text-white">$25</span>
                     <span className="text-gray-500 dark:text-gray-400 ml-2">/month</span>
                   </div>
                   
                   <ul className="space-y-3 mb-6">
                     {[
-                      'Unlimited AI Generations',
-                      'Advanced Analytics Dashboard',
-                      'Priority Email Support',
+                      'Create Unlimited Apps',
+                      'GitHub Integration',
+                      'Full Stack Web App Builder',
+                      'Dev-server with Preview',
+                      'Dev Assistant',
                       'Early Access to New Features',
-                      'Custom Integrations'
+                      'Priority Email Support',
+                      'Host website to Netlify'
                     ].map((feature, index) => (
                       <li key={index} className="flex items-center">
                         <span className="i-ph:check-circle-fill text-green-500 mr-2"></span>
@@ -194,12 +197,12 @@ export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
                   Continue
                 </button>
                 
-                <button
+                 {/* <button
                   onClick={handleMaybeLater}
                   className="w-full px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
                 >
                   Continue with Basic (Limited Features)
-                </button>
+                </button> */}
                 
                 <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
                   Need help? <a href="#" className="text-blue-600 hover:underline dark:text-blue-400">Contact support</a>

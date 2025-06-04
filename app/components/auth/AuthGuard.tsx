@@ -2,6 +2,15 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useAuth } from '@clerk/remix';
 import * as Dialog from '@radix-ui/react-dialog';
 
+declare global {
+  interface Window {
+    Clerk?: {
+      openSignIn: (options?: any) => void;
+      // Add other Clerk methods if needed
+    };
+  }
+}
+
 // Utility to wait for an element to appear in the DOM
 const waitForElement = (selector: string, timeout = 5000): Promise<Element | null> => {
   return new Promise((resolve) => {
@@ -86,7 +95,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     // Don't close our dialog yet - we'll let Clerk handle the transition
     
     // Open Clerk's sign-in modal
-    if (typeof window.Clerk?.openSignIn === 'function') {
+    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
       // First, open Clerk's modal
       window.Clerk.openSignIn();
       
