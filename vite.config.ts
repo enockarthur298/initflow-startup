@@ -96,20 +96,37 @@ export default defineConfig((config) => {
         transformMixedEsModules: true,
       },
       rollupOptions: {
-        external: ['events', 'crypto', 'stream'],
+        // Remove 'crypto' from external as we want to polyfill it
+        external: ['events', 'stream'],
       },
     },
     plugins: [
       nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream', 'crypto'],  // Added 'crypto'
+        // Make sure crypto is included in the polyfills
+        include: ['buffer', 'process', 'util', 'stream', 'crypto'],
         globals: {
           Buffer: true,
           process: true,
           global: true,
         },
         protocolImports: true,
+        // Keep excluding these Node.js modules
         exclude: ['child_process', 'fs', 'path'],
       }),
+      // Add a plugin to transform crypto imports
+      {
+        name: 'transform-crypto-imports',
+        transform(code, id) {
+          // Transform direct crypto imports to use the polyfill
+          if (code.includes('import crypto from "crypto"')) {
+            return {
+              code: code.replace('import crypto from "crypto"', 'import crypto from "node:crypto"'),
+              map: null,
+            };
+          }
+          return null;
+        },
+      },
       {
         name: 'buffer-polyfill',
         transform(code, id) {
