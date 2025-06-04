@@ -27,24 +27,13 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
-      rollupOptions: {
-        external: ['node:events', 'node:util'],
-      },
-    },
-    ssr: {
-      noExternal: true,
-      target: 'webworker',
     },
     plugins: [
       nodePolyfills({
         // Whether to polyfill specific node:* protocol imports like node:path
         protocolImports: true,
         // Include all required Node.js polyfills
-        include: ['path', 'buffer', 'process', 'crypto', 'stream', 'events', 'util'],
-        globals: {
-          process: true,
-          Buffer: true,
-        },
+        include: ['path', 'buffer', 'process', 'crypto', 'stream'],
       }),
       config.mode !== 'test' && remixCloudflareDevProxy(),
       remixVitePlugin({
